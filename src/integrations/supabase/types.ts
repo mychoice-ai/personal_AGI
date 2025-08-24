@@ -14,7 +14,192 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_responses: {
+        Row: {
+          category: Database["public"]["Enums"]["ai_category"]
+          confidence: number | null
+          created_at: string
+          id: string
+          query: string
+          response: string
+          user_id: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["ai_category"]
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          query: string
+          response: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["ai_category"]
+          confidence?: number | null
+          created_at?: string
+          id?: string
+          query?: string
+          response?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goals: {
+        Row: {
+          category: Database["public"]["Enums"]["goal_category"]
+          completed: boolean | null
+          created_at: string
+          deadline: string | null
+          description: string | null
+          id: string
+          priority: Database["public"]["Enums"]["goal_priority"] | null
+          progress: number | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["goal_category"]
+          completed?: boolean | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["goal_priority"] | null
+          progress?: number | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["goal_category"]
+          completed?: boolean | null
+          created_at?: string
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          priority?: Database["public"]["Enums"]["goal_priority"] | null
+          progress?: number | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      health_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          timestamp: string
+          trend: Database["public"]["Enums"]["trend_type"] | null
+          type: Database["public"]["Enums"]["health_metric_type"]
+          unit: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          timestamp?: string
+          trend?: Database["public"]["Enums"]["trend_type"] | null
+          type: Database["public"]["Enums"]["health_metric_type"]
+          unit: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          timestamp?: string
+          trend?: Database["public"]["Enums"]["trend_type"] | null
+          type?: Database["public"]["Enums"]["health_metric_type"]
+          unit?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      integrations: {
+        Row: {
+          config: Json | null
+          connected: boolean | null
+          created_at: string
+          id: string
+          last_sync: string | null
+          name: string
+          status: Database["public"]["Enums"]["integration_status"] | null
+          type: Database["public"]["Enums"]["integration_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json | null
+          connected?: boolean | null
+          created_at?: string
+          id?: string
+          last_sync?: string | null
+          name: string
+          status?: Database["public"]["Enums"]["integration_status"] | null
+          type: Database["public"]["Enums"]["integration_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json | null
+          connected?: boolean | null
+          created_at?: string
+          id?: string
+          last_sync?: string | null
+          name?: string
+          status?: Database["public"]["Enums"]["integration_status"] | null
+          type?: Database["public"]["Enums"]["integration_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          ai_personality: Database["public"]["Enums"]["ai_personality"] | null
+          avatar_url: string | null
+          created_at: string
+          health_tracking: boolean | null
+          id: string
+          name: string
+          notifications: boolean | null
+          subscription: Database["public"]["Enums"]["subscription_type"] | null
+          theme: Database["public"]["Enums"]["user_theme"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_personality?: Database["public"]["Enums"]["ai_personality"] | null
+          avatar_url?: string | null
+          created_at?: string
+          health_tracking?: boolean | null
+          id?: string
+          name: string
+          notifications?: boolean | null
+          subscription?: Database["public"]["Enums"]["subscription_type"] | null
+          theme?: Database["public"]["Enums"]["user_theme"] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_personality?: Database["public"]["Enums"]["ai_personality"] | null
+          avatar_url?: string | null
+          created_at?: string
+          health_tracking?: boolean | null
+          id?: string
+          name?: string
+          notifications?: boolean | null
+          subscription?: Database["public"]["Enums"]["subscription_type"] | null
+          theme?: Database["public"]["Enums"]["user_theme"] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +208,21 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      ai_category: "health" | "productivity" | "creative" | "planning"
+      ai_personality: "formal" | "casual" | "friendly"
+      goal_category: "health" | "career" | "personal" | "financial"
+      goal_priority: "low" | "medium" | "high"
+      health_metric_type:
+        | "heart_rate"
+        | "sleep"
+        | "steps"
+        | "stress"
+        | "temperature"
+      integration_status: "active" | "error" | "pending"
+      integration_type: "health" | "productivity" | "smart_home" | "social"
+      subscription_type: "free" | "pro" | "elite"
+      trend_type: "up" | "down" | "stable"
+      user_theme: "light" | "dark" | "auto"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +349,23 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      ai_category: ["health", "productivity", "creative", "planning"],
+      ai_personality: ["formal", "casual", "friendly"],
+      goal_category: ["health", "career", "personal", "financial"],
+      goal_priority: ["low", "medium", "high"],
+      health_metric_type: [
+        "heart_rate",
+        "sleep",
+        "steps",
+        "stress",
+        "temperature",
+      ],
+      integration_status: ["active", "error", "pending"],
+      integration_type: ["health", "productivity", "smart_home", "social"],
+      subscription_type: ["free", "pro", "elite"],
+      trend_type: ["up", "down", "stable"],
+      user_theme: ["light", "dark", "auto"],
+    },
   },
 } as const
