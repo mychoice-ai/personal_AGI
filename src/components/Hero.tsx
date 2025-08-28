@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Brain, Zap, Sparkles } from 'lucide-react';
 import NeuralBackground from './NeuralBackground';
@@ -44,18 +45,22 @@ const Hero = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="quantum-gradient text-black font-semibold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300">
-              Begin Evolution
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <Link to="/dashboard">
+              <Button size="lg" className="quantum-gradient text-black font-semibold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300">
+                Begin Evolution
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
             
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="glass-morphism border-accent/30 hover:border-accent px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300"
-            >
-              Explore Consciousness
-            </Button>
+            <Link to="/consciousness-simulation">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="glass-morphism border-accent/30 hover:border-accent px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300"
+              >
+                Explore Consciousness
+              </Button>
+            </Link>
           </div>
           
           {/* Trust Indicators */}
