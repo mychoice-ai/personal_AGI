@@ -17,6 +17,12 @@ import QuantumOptimization from "./pages/QuantumOptimization";
 import CollectiveIntelligence from "./pages/CollectiveIntelligence";
 import ConsciousnessSimulation from "./pages/ConsciousnessSimulation";
 import QuantumSecurity from "./pages/QuantumSecurity";
+import OptimizationOliver from "./pages/personas/OptimizationOliver";
+import CreativeChloe from "./pages/personas/CreativeChloe";
+import WellnessWilliam from "./pages/personas/WellnessWilliam";
+import EntrepreneurEmma from "./pages/personas/EntrepreneurEmma";
+import TrialSignup from "./pages/TrialSignup";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +45,12 @@ const App = () => (
             <Route path="/collective-intelligence" element={<CollectiveIntelligence />} />
             <Route path="/consciousness-simulation" element={<ConsciousnessSimulation />} />
             <Route path="/quantum-security" element={<QuantumSecurity />} />
+            <Route path="/personas/optimization-oliver" element={<OptimizationOliver />} />
+            <Route path="/personas/creative-chloe" element={<CreativeChloe />} />
+            <Route path="/personas/wellness-william" element={<WellnessWilliam />} />
+            <Route path="/personas/entrepreneur-emma" element={<EntrepreneurEmma />} />
+            <Route path="/trial-signup" element={<TrialSignup />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
