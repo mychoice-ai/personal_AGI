@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, CreditCard, Shield, Zap, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
 const TrialSignup = () => {
+  const { user, loading } = useAuth();
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingPayment, setLoadingPayment] = useState(false);
+
+  // Redirect to auth if not logged in
+  if (!loading && !user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const handleStartTrial = async () => {
-    if (!email) {
-      toast.error('Please enter your email address');
+    if (!user?.email) {
+      toast.error('Please sign in to start your trial');
       return;
     }
 
-    setLoading(true);
+    setLoadingPayment(true);
     try {
       const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: { email, planType: 'trial' }
+        body: { email: user.email, planType: 'trial' }
       });
 
       if (error) throw error;
@@ -33,7 +48,7 @@ const TrialSignup = () => {
       console.error('Payment error:', error);
       toast.error('Failed to start checkout. Please try again.');
     } finally {
-      setLoading(false);
+      setLoadingPayment(false);
     }
   };
 
@@ -127,20 +142,22 @@ const TrialSignup = () => {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="your.email@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="glass-morphism border-accent/20 focus:border-accent mt-2"
+                      value={user?.email || ''}
+                      disabled
+                      className="glass-morphism border-accent/20 bg-muted/50 mt-2"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Signed in as {user?.user_metadata?.name || user?.email}
+                    </p>
                   </div>
 
                   <Button 
                     onClick={handleStartTrial}
-                    disabled={loading}
+                    disabled={loadingPayment}
                     size="lg" 
                     className="w-full quantum-gradient text-black font-semibold py-4 rounded-xl hover:scale-105 transition-all duration-300"
                   >
-                    {loading ? 'Starting Trial...' : 'Start Free Trial'}
+                    {loadingPayment ? 'Starting Trial...' : 'Start Free Trial'}
                   </Button>
 
                   <div className="text-center text-sm text-muted-foreground">
