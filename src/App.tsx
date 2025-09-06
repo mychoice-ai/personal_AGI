@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MockDataProvider } from "@/hooks/useMockData";
 import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Dashboard from "./components/Dashboard";
 import NotFound from "./pages/NotFound";
@@ -38,8 +39,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/causal-reasoning" element={<CausalReasoning />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/causal-reasoning" element={<ProtectedRoute><CausalReasoning /></ProtectedRoute>} />
             <Route path="/meta-learning" element={<MetaLearning />} />
             <Route path="/advanced-biometric" element={<AdvancedBiometric />} />
             <Route path="/predictive-analysis" element={<PredictiveAnalysis />} />
