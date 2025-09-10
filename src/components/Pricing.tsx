@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Check, Zap, Crown, Building } from 'lucide-react';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Pricing = () => {
   const plans = [
@@ -64,10 +65,19 @@ const Pricing = () => {
     }
   ];
 
+  const headerRef = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const { ref: gridRef, visibleItems } = useStaggeredAnimation(plans.length, 150);
+  const enterpriseRef = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
+
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+        <div 
+          ref={headerRef.ref}
+          className={`text-center mb-16 scroll-zoom-in ${
+            headerRef.isVisible ? 'visible' : ''
+          }`}
+        >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="neural-text-gradient">Choose Your Evolution</span>
           </h2>
@@ -77,13 +87,19 @@ const Pricing = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+        >
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`glass-morphism p-8 relative hover:scale-105 transition-all duration-300 ${
+              className={`glass-morphism p-8 relative hover:scale-105 transition-all duration-300 scroll-zoom-in ${
                 plan.popular ? 'ring-2 ring-accent scale-105' : ''
-              }`}
+              } ${visibleItems[index] ? 'visible' : ''}`}
+              style={{ 
+                transitionDelay: `${index * 150}ms`
+              }}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -130,7 +146,13 @@ const Pricing = () => {
           ))}
         </div>
         
-        <div className="text-center mt-16">
+        <div 
+          ref={enterpriseRef.ref}
+          className={`text-center mt-16 scroll-zoom-in ${
+            enterpriseRef.isVisible ? 'visible' : ''
+          }`}
+          style={{ transitionDelay: '450ms' }}
+        >
           <p className="text-muted-foreground mb-4">
             Need something custom for your organization?
           </p>

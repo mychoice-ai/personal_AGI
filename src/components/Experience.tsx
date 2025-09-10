@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, User, Briefcase, Heart, Rocket } from 'lucide-react';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Experience = () => {
   const personas = [
@@ -41,10 +42,19 @@ const Experience = () => {
     }
   ];
 
+  const headerRef = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const { ref: gridRef, visibleItems } = useStaggeredAnimation(personas.length, 200);
+  const ctaRef = useScrollAnimation<HTMLDivElement>({ threshold: 0.3 });
+
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+        <div 
+          ref={headerRef.ref}
+          className={`text-center mb-16 scroll-zoom-in ${
+            headerRef.isVisible ? 'visible' : ''
+          }`}
+        >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="neural-text-gradient">Personalized for You</span>
           </h2>
@@ -54,10 +64,20 @@ const Experience = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16"
+        >
           {personas.map((persona, index) => (
             <Link key={index} to={persona.link}>
-              <Card className="glass-morphism p-8 hover:scale-105 transition-all duration-300 cursor-pointer">
+              <Card 
+                className={`glass-morphism p-8 hover:scale-105 transition-all duration-300 cursor-pointer scroll-zoom-in ${
+                  visibleItems[index] ? 'visible' : ''
+                }`}
+                style={{ 
+                  transitionDelay: `${index * 200}ms`
+                }}
+              >
                 <div className="flex items-start space-x-4 mb-6">
                   <div className="w-12 h-12 rounded-lg quantum-gradient p-3">
                     <persona.icon className="w-6 h-6 text-black" />
@@ -85,7 +105,13 @@ const Experience = () => {
           ))}
         </div>
         
-        <div className="text-center">
+        <div 
+          ref={ctaRef.ref}
+          className={`text-center scroll-zoom-in ${
+            ctaRef.isVisible ? 'visible' : ''
+          }`}
+          style={{ transitionDelay: '600ms' }}
+        >
           <div className="glass-morphism rounded-2xl p-12 max-w-4xl mx-auto">
             <h3 className="text-3xl font-bold mb-4">Ready to Begin Your Evolution?</h3>
             <p className="text-xl text-muted-foreground mb-8">

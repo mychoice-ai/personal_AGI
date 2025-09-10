@@ -13,6 +13,7 @@ import {
   Lightbulb,
   Shield
 } from 'lucide-react';
+import { useScrollAnimation, useStaggeredAnimation } from '@/hooks/useScrollAnimation';
 
 const Features = () => {
   const features = [
@@ -81,10 +82,18 @@ const Features = () => {
     }
   ];
 
+  const headerRef = useScrollAnimation<HTMLDivElement>({ threshold: 0.2 });
+  const { ref: gridRef, visibleItems } = useStaggeredAnimation(features.length, 150);
+
   return (
     <section className="py-24 relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
+        <div 
+          ref={headerRef.ref}
+          className={`text-center mb-16 scroll-zoom-in ${
+            headerRef.isVisible ? 'visible' : ''
+          }`}
+        >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="neural-text-gradient">Revolutionary Capabilities</span>
           </h2>
@@ -94,10 +103,20 @@ const Features = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {features.map((feature, index) => (
             <Link key={index} to={feature.link}>
-              <Card className="glass-morphism p-6 hover:scale-105 transition-all duration-300 group cursor-pointer">
+              <Card 
+                className={`glass-morphism p-6 hover:scale-105 transition-all duration-300 group cursor-pointer scroll-zoom-in ${
+                  visibleItems[index] ? 'visible' : ''
+                }`}
+                style={{ 
+                  transitionDelay: `${index * 150}ms`
+                }}
+              >
                 <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${feature.color} p-3 mb-4 quantum-float`}>
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>

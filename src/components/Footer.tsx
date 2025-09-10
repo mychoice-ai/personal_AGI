@@ -1,10 +1,18 @@
 
 import React from 'react';
 import { Brain, Github, Twitter, Linkedin, Mail } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const Footer = () => {
+  const footerRef = useScrollAnimation<HTMLElement>({ threshold: 0.1 });
+
   return (
-    <footer className="py-16 border-t border-border/30">
+    <footer 
+      ref={footerRef.ref}
+      className={`py-16 border-t border-border/30 scroll-zoom-in ${
+        footerRef.isVisible ? 'visible' : ''
+      }`}
+    >
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
